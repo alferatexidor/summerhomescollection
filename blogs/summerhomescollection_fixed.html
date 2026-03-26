@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Homes Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --off-white: #F8F5F0;
+  --paper: #FDFCF9;
+  --ink: #0D0D0B;
+  --mid: #6B6560;
+  --rule: #D8D2CA;
+  --accent: #B8603A;
+  --accent-light: #E8C4A8;
+  --france: #2B4A2A;
+  --thailand: #1E3D4F;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+#cur, #cur-ring { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+#cur { width: 8px; height: 8px; background: var(--accent); transition: width .3s, height .3s; }
+#cur-ring { width: 36px; height: 36px; border: 1px solid var(--accent); opacity: .55; z-index: 9998; transition: width .3s, height .3s, opacity .3s; }
+
+/* MASTHEAD */
+.mast {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; padding: 0 48px; height: 62px;
+}
+.mast-nav { display: flex; gap: 32px; }
+.mast-nav-r { justify-content: flex-end; }
+.mast-nav a { font-size: .61rem; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color .25s; }
+.mast-nav a:hover { color: var(--accent); }
+.mast-logo { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.mast-book { background: var(--ink) !important; color: var(--off-white) !important; padding: 10px 22px; transition: background .3s !important; }
+.mast-book:hover { background: var(--accent) !important; }
+
+/* TICKER */
+.ticker-bar {
+  margin-top: 62px; background: var(--ink); padding: 9px 48px;
+  display: flex; justify-content: space-between; align-items: center; overflow: hidden;
+}
+.ticker-tag { font-size: .57rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(248,245,240,.35); white-space: nowrap; }
+.ticker-text { font-size: .57rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-light); white-space: nowrap; animation: tick 22s linear infinite; }
+@keyframes tick { 0%{transform:translateX(100vw)} 100%{transform:translateX(-300%)} }
+
+/* HERO SPLIT */
+.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 84px); }
+.hero-panel { position: relative; overflow: hidden; }
+.hero-panel-france { background: var(--france); }
+.hero-panel-thailand { background: var(--thailand); }
+.hero-img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+  position: absolute; top: 0; left: 0;
+}
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.08) 55%, transparent 100%); }
+.hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 48px; }
+.hero-eyebrow { font-size: .57rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px; }
+.hero-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 18px; }
+.hero-sub { font-size: .78rem; color: rgba(255,255,255,.75); line-height: 1.7; max-width: 340px; margin-bottom: 28px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 10px; font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.4); padding-bottom: 4px; transition: border-color .3s; }
+.hero-cta:hover { border-color: #fff; }
+.hero-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: rgba(255,255,255,.2); z-index: 10; }
+
+/* EDITORIAL BAND */
+.ed-band { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--rule); }
+.ed-cell { padding: 32px 40px; border-right: 1px solid var(--rule); }
+.ed-cell:last-child { border-right: none; }
+.ed-label { font-size: .54rem; letter-spacing: .28em; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+.ed-val { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--ink); }
+.ed-note { font-size: .72rem; color: var(--mid); margin-top: 4px; }
+
+/* SECTION TITLES */
+.sec-wrap { padding: 100px 80px; }
+.sec-eye { font-size: .57rem; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.sec-h { font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400; line-height: 1.15; color: var(--ink); max-width: 540px; }
+.sec-h em { font-style: italic; color: var(--accent); }
+.sec-rule { width: 48px; height: 1px; background: var(--rule); margin: 28px 0; }
+.sec-sub { font-size: .82rem; color: var(--mid); line-height: 1.8; max-width: 480px; }
+
+/* PROPERTY FEATURE — FRANCE */
+.prop-france {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 88vh;
+}
+.prop-img-wrap {
+  position: relative;
+  overflow: hidden;
+  /* FIX: remove any background that bleeds through */
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+.prop-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.prop-content { background: var(--off-white); display: flex; flex-direction: column; justify-content: center; padding: 80px; }
+.prop-flag { font-size: .57rem; letter-spacing: .3em; text-transform: uppercase; color: var(--france); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.prop-flag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--france); }
+.prop-h { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; line-height: 1.1; color: var(--ink); margin-bottom: 10px; }
+.prop-place { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mid); margin-bottom: 30px; }
+.prop-desc { font-size: .84rem; color: var(--mid); line-height: 1.85; margin-bottom: 36px; max-width: 400px; }
+.prop-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; margin-bottom: 40px; border-top: 1px solid var(--rule); padding-top: 28px; }
+.prop-spec-label { font-size: .54rem; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
+.prop-spec-val { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
+.prop-cta { display: inline-flex; align-items: center; gap: 12px; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 5px; transition: color .3s, border-color .3s; width: fit-content; }
+.prop-cta:hover { color: var(--accent); border-color: var(--accent); }
+
+/* PROPERTY FEATURE — THAILAND */
+.prop-thailand {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 88vh;
+}
+.prop-thailand .prop-content { background: var(--ink); }
+.prop-thailand .prop-flag { color: var(--accent-light); }
+.prop-thailand .prop-flag::before { background: var(--accent-light); }
+.prop-thailand .prop-h { color: var(--off-white); }
+.prop-thailand .prop-place { color: rgba(248,245,240,.45); }
+.prop-thailand .prop-desc { color: rgba(248,245,240,.65); }
+.prop-thailand .prop-specs { border-top-color: rgba(255,255,255,.12); }
+.prop-thailand .prop-spec-label { color: rgba(248,245,240,.4); }
+.prop-thailand .prop-spec-val { color: var(--off-white); }
+.prop-thailand .prop-cta { color: var(--off-white); border-color: rgba(255,255,255,.4); }
+.prop-thailand .prop-cta:hover { color: var(--accent-light); border-color: var(--accent-light); }
+
+/* GALLERY STRIP */
+.gallery-strip {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  height: 520px;
+  gap: 0;
+}
+.g-cell {
+  position: relative;
+  overflow: hidden;
+  /* FIX: no background color, no padding */
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+.g-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.g-cell-label { position: absolute; bottom: 20px; left: 20px; font-size: .54rem; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.7); z-index: 2; }
+
+/* WHAT WE OFFER */
+.what-wrap { padding: 100px 80px; background: var(--off-white); }
+.what-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 60px; }
+.what-cell { padding: 40px 32px; background: var(--paper); position: relative; overflow: hidden; transition: background .4s; }
+.what-cell:hover { background: var(--ink); }
+.what-cell:hover .what-title, .what-cell:hover .what-desc { color: var(--off-white); }
+.what-cell:hover .what-num { color: rgba(255,255,255,.1); }
+.what-num { font-family: var(--serif); font-size: 5rem; font-weight: 900; color: var(--rule); position: absolute; top: -10px; right: 16px; line-height: 1; transition: color .4s; }
+.what-icon { font-size: 1.4rem; margin-bottom: 24px; }
+.what-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 12px; transition: color .4s; }
+.what-desc { font-size: .78rem; color: var(--mid); line-height: 1.75; transition: color .4s; }
+
+/* AVAILABILITY / RATES */
+.rates-wrap { display: grid; grid-template-columns: 1fr 1fr; }
+.rates-panel { padding: 80px; }
+.rates-panel-france { background: var(--france); }
+.rates-panel-thailand { background: var(--thailand); }
+.rates-eye { font-size: .54rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 16px; }
+.rates-h { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.rates-place { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 36px; }
+.rates-row { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+.rates-season { font-size: .72rem; color: rgba(255,255,255,.65); }
+.rates-price { font-family: var(--serif); font-size: 1.2rem; color: #fff; }
+.rates-note { font-size: .68rem; color: rgba(255,255,255,.38); margin-top: 6px; }
+.rates-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 36px; font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.4); padding-bottom: 4px; transition: border-color .3s; }
+.rates-cta:hover { border-color: #fff; }
+
+/* TIPS */
+.tips-wrap { padding: 100px 80px; }
+.tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
+.tip-card { border: 1px solid var(--rule); padding: 36px; position: relative; transition: border-color .3s; }
+.tip-card:hover { border-color: var(--accent); }
+.tip-loc { font-size: .54rem; letter-spacing: .28em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+.tip-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.tip-desc { font-size: .78rem; color: var(--mid); line-height: 1.75; }
+.tip-arrow { position: absolute; bottom: 24px; right: 24px; color: var(--rule); font-size: .9rem; transition: color .3s; }
+.tip-card:hover .tip-arrow { color: var(--accent); }
+
+/* QUOTE PAGE */
+.quote-pg {
+  min-height: 60vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px;
+  overflow: hidden;
+  /* FIX: no stray background */
+  background: none;
+}
+.quote-pg-bg {
+  position: absolute;
+  inset: 0;
+  /* FIX: image fills fully */
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+.quote-pg-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.quote-pg-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+.q-line { width: 1px; height: 60px; background: rgba(255,255,255,.3); margin: 0 auto 32px; position: relative; z-index: 2; }
+.q-text { font-family: var(--serif); font-size: clamp(1.4rem, 2.8vw, 2.2rem); font-weight: 400; font-style: italic; color: #fff; line-height: 1.5; max-width: 700px; position: relative; z-index: 2; margin-bottom: 24px; }
+.q-attr { font-size: .6rem; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.45); position: relative; z-index: 2; }
+
+/* CONTACT */
+.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; }
+.contact-l { padding: 80px; background: var(--off-white); display: flex; flex-direction: column; justify-content: space-between; }
+.c-eye { font-size: .57rem; letter-spacing: .3em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.c-h { font-family: var(--serif); font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 400; line-height: 1.15; color: var(--ink); }
+.c-h em { font-style: italic; }
+.c-sub { font-size: .82rem; color: var(--mid); line-height: 1.8; margin-top: 20px; max-width: 400px; }
+.c-info { margin-top: 40px; }
+.c-info-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.c-info-label { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--mid); }
+.c-info-val { font-size: .8rem; color: var(--ink); }
+.c-info-val a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+.contact-r { padding: 80px; background: var(--ink); }
+.form-tag { font-size: .54rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(248,245,240,.35); margin-bottom: 36px; }
+.fld { margin-bottom: 22px; }
+.fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fld label { display: block; font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(248,245,240,.45); margin-bottom: 8px; }
+.fld input, .fld select, .fld textarea {
+  width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+  color: var(--off-white); font-family: var(--sans); font-size: .82rem; font-weight: 300;
+  padding: 14px 16px; outline: none; transition: border-color .3s;
+}
+.fld input::placeholder, .fld textarea::placeholder { color: rgba(248,245,240,.25); }
+.fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--accent); }
+.fld select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+.fld select option { background: var(--ink); }
+.fld textarea { height: 110px; resize: none; }
+.form-submit {
+  margin-top: 8px; width: 100%; background: var(--accent); border: none; color: #fff;
+  font-family: var(--sans); font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+  padding: 18px; cursor: pointer; transition: background .3s;
+}
+.form-submit:hover { background: #a0532f; }
+
+/* FOOTER */
+footer { background: var(--ink); padding: 80px 80px 0; }
+.ft { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.ft-logo { font-family: var(--serif); font-size: .95rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--off-white); display: block; margin-bottom: 16px; }
+.ft-tag { font-size: .76rem; color: rgba(248,245,240,.4); line-height: 1.75; }
+.fc-title { font-size: .54rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(248,245,240,.35); display: block; margin-bottom: 18px; }
+.fc-links { list-style: none; }
+.fc-links li { margin-bottom: 10px; }
+.fc-links a { font-size: .78rem; color: rgba(248,245,240,.55); text-decoration: none; transition: color .3s; }
+.fc-links a:hover { color: var(--accent-light); }
+.fb { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
+.fb-copy { font-size: .65rem; color: rgba(248,245,240,.25); }
+.fb-tag { font-size: .65rem; color: rgba(248,245,240,.2); font-style: italic; }
+
+/* SCROLL REVEAL */
+.rev { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+.rev.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .12s; }
+.d2 { transition-delay: .24s; }
+.d3 { transition-delay: .36s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .mast { padding: 0 24px; }
+  .mast-nav { display: none; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-divider { display: none; }
+  .ed-band { grid-template-columns: 1fr; }
+  .ed-cell { border-right: none; border-bottom: 1px solid var(--rule); }
+  .prop-france, .prop-thailand { grid-template-columns: 1fr; }
+  .prop-img-wrap { min-height: 55vw; position: relative; }
+  .gallery-strip { grid-template-columns: 1fr; height: auto; }
+  .g-cell { min-height: 56vw; position: relative; }
+  .what-grid { grid-template-columns: 1fr 1fr; }
+  .rates-wrap { grid-template-columns: 1fr; }
+  .tips-grid { grid-template-columns: 1fr; }
+  .contact-wrap { grid-template-columns: 1fr; }
+  .sec-wrap, .what-wrap, .tips-wrap { padding: 64px 24px; }
+  .prop-content { padding: 48px 24px; }
+  .rates-panel { padding: 48px 24px; }
+  .contact-l, .contact-r { padding: 48px 24px; }
+  footer { padding: 60px 24px 0; }
+  .ft { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- MASTHEAD -->
+<header class="mast">
+  <nav class="mast-nav">
+    <a href="#france">France</a>
+    <a href="#thailand">Thailand</a>
+    <a href="#rates">Rates</a>
+  </nav>
+  <a class="mast-logo" href="#">Summer Homes</a>
+  <nav class="mast-nav mast-nav-r">
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">About</a>
+    <a href="#contact" class="mast-book">Book Now</a>
+  </nav>
+</header>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <span class="ticker-tag">Available 2026</span>
+  <span class="ticker-text">Moulin des Coutoux — Dordogne, France &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; Villa Nalu — Ko Samui, Thailand &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; Two Private Homes &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; Slow Holidays &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; Family Escapes &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; Book for Summer 2026</span>
+</div>
+
+<!-- HERO SPLIT -->
+<section class="hero">
+  <div class="hero-panel hero-panel-france">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200&q=80" alt="Moulin des Coutoux, France">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Dordogne · France</div>
+      <h1 class="hero-title">Moulin des<br>Coutoux</h1>
+      <p class="hero-sub">A 17th-century mill house in the heart of the Périgord. Stone walls, a private river, and six hectares of woodland.</p>
+      <a class="hero-cta" href="#france">Discover the property →</a>
+    </div>
+  </div>
+  <div class="hero-panel hero-panel-thailand">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80" alt="Villa Nalu, Thailand">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Ko Samui · Thailand</div>
+      <h1 class="hero-title">Villa<br>Nalu</h1>
+      <p class="hero-sub">A hillside villa above the Gulf of Thailand. Infinity pool, open-air living and direct views across three islands.</p>
+      <a class="hero-cta" href="#thailand">Discover the property →</a>
+    </div>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- EDITORIAL BAND -->
+<div class="ed-band">
+  <div class="ed-cell">
+    <div class="ed-label">Properties</div>
+    <div class="ed-val">Two</div>
+    <div class="ed-note">France &amp; Thailand</div>
+  </div>
+  <div class="ed-cell">
+    <div class="ed-label">Capacity</div>
+    <div class="ed-val">Up to 12</div>
+    <div class="ed-note">Guests per property</div>
+  </div>
+  <div class="ed-cell">
+    <div class="ed-label">Booking</div>
+    <div class="ed-val">Private</div>
+    <div class="ed-note">Whole-house rental only</div>
+  </div>
+</div>
+
+<!-- FRANCE FEATURE -->
+<section id="france" class="prop-france">
+  <div class="prop-img-wrap rev">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80" alt="Moulin des Coutoux exterior">
+  </div>
+  <div class="prop-content rev d1">
+    <div class="prop-flag">France — Dordogne</div>
+    <h2 class="prop-h">Moulin des Coutoux</h2>
+    <div class="prop-place">Périgord Noir · Southwest France</div>
+    <p class="prop-desc">Set along a private stretch of the Dronne river, this restored 17th-century mill sits within six hectares of oak woodland. Five bedrooms, original stone floors, a working bread oven and the kind of quiet that city life forgets exists.</p>
+    <div class="prop-specs">
+      <div>
+        <div class="prop-spec-label">Bedrooms</div>
+        <div class="prop-spec-val">5</div>
+      </div>
+      <div>
+        <div class="prop-spec-label">Guests</div>
+        <div class="prop-spec-val">Up to 10</div>
+      </div>
+      <div>
+        <div class="prop-spec-label">Land</div>
+        <div class="prop-spec-val">6 ha</div>
+      </div>
+      <div>
+        <div class="prop-spec-label">River</div>
+        <div class="prop-spec-val">Private</div>
+      </div>
+    </div>
+    <a class="prop-cta" href="#contact">Enquire about France →</a>
+  </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<div class="gallery-strip" id="gallery">
+  <div class="g-cell">
+    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80" alt="France interior">
+    <span class="g-cell-label">The Mill House</span>
+  </div>
+  <div class="g-cell">
+    <img src="https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=800&q=80" alt="River view">
+    <span class="g-cell-label">Private River</span>
+  </div>
+  <div class="g-cell">
+    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" alt="Interior living">
+    <span class="g-cell-label">Stone Interiors</span>
+  </div>
+</div>
+
+<!-- THAILAND FEATURE -->
+<section id="thailand" class="prop-thailand">
+  <div class="prop-content rev">
+    <div class="prop-flag">Thailand — Ko Samui</div>
+    <h2 class="prop-h">Villa Nalu</h2>
+    <div class="prop-place">Chaweng Noi · Gulf of Thailand</div>
+    <p class="prop-desc">Perched on the hillside above Chaweng Noi beach, Villa Nalu is a five-bedroom retreat built around an infinity pool that seems to dissolve into the sea. Open-plan living, a fully staffed kitchen and views to make every morning feel like a discovery.</p>
+    <div class="prop-specs">
+      <div>
+        <div class="prop-spec-label">Bedrooms</div>
+        <div class="prop-spec-val">5</div>
+      </div>
+      <div>
+        <div class="prop-spec-label">Guests</div>
+        <div class="prop-spec-val">Up to 10</div>
+      </div>
+      <div>
+        <div class="prop-spec-label">Pool</div>
+        <div class="prop-spec-val">Infinity</div>
+      </div>
+      <div>
+        <div class="prop-spec-label">Staff</div>
+        <div class="prop-spec-val">Included</div>
+      </div>
+    </div>
+    <a class="prop-cta" href="#contact">Enquire about Thailand →</a>
+  </div>
+  <div class="prop-img-wrap rev d1">
+    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=80" alt="Villa Nalu, Thailand">
+  </div>
+</section>
+
+<!-- GALLERY STRIP 2 -->
+<div class="gallery-strip">
+  <div class="g-cell">
+    <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1200&q=80" alt="Villa pool">
+    <span class="g-cell-label">Infinity Pool</span>
+  </div>
+  <div class="g-cell">
+    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80" alt="Sea view">
+    <span class="g-cell-label">Gulf Views</span>
+  </div>
+  <div class="g-cell">
+    <img src="https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?w=800&q=80" alt="Thai interior">
+    <span class="g-cell-label">Open-Air Living</span>
+  </div>
+</div>
+
+<!-- WHAT WE OFFER -->
+<section class="what-wrap">
+  <div class="sec-wrap" style="padding:0 0 0 0;">
+    <div class="sec-eye rev">What We Offer</div>
+    <h2 class="sec-h rev d1">Everything you need.<br><em>Nothing you don't.</em></h2>
+  </div>
+  <div class="what-grid" style="margin-top:48px;">
+    <div class="what-cell rev">
+      <span class="what-num">01</span>
+      <div class="what-icon">🏡</div>
+      <div class="what-title">Whole-House Privacy</div>
+      <p class="what-desc">The entire property is yours. No shared spaces, no other guests, no schedules that aren't your own.</p>
+    </div>
+    <div class="what-cell rev d1">
+      <span class="what-num">02</span>
+      <div class="what-icon">🌿</div>
+      <div class="what-title">Space to Breathe</div>
+      <p class="what-desc">Hectares of land in France. Hillside terraces in Thailand. Room for families to find their own rhythm.</p>
+    </div>
+    <div class="what-cell rev d2">
+      <span class="what-num">03</span>
+      <div class="what-icon">🍽</div>
+      <div class="what-title">Local & Seasonal</div>
+      <p class="what-desc">Boulangeries, markets, local producers. In Thailand, a private chef and fresh market runs included.</p>
+    </div>
+    <div class="what-cell rev d3">
+      <span class="what-num">04</span>
+      <div class="what-icon">📍</div>
+      <div class="what-title">Genuine Guidance</div>
+      <p class="what-desc">We share our local knowledge — restaurants, walks, hidden spots — without the usual tourist itinerary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RATES -->
+<section class="rates-wrap" id="rates">
+  <div class="rates-panel rates-panel-france rev">
+    <div class="rates-eye">Pricing — France</div>
+    <h3 class="rates-h">Moulin des Coutoux</h3>
+    <div class="rates-place">Dordogne, France</div>
+    <div class="rates-row"><span class="rates-season">Low Season (Oct – Apr)</span><span class="rates-price">€2,800 / week</span></div>
+    <div class="rates-row"><span class="rates-season">Mid Season (May, Jun, Sep)</span><span class="rates-price">€3,600 / week</span></div>
+    <div class="rates-row"><span class="rates-season">High Season (Jul – Aug)</span><span class="rates-price">€4,800 / week</span></div>
+    <div class="rates-note">Prices are for the whole property. Minimum 7-night stay in summer.</div>
+    <a class="rates-cta" href="#contact">Check availability →</a>
+  </div>
+  <div class="rates-panel rates-panel-thailand rev d1">
+    <div class="rates-eye">Pricing — Thailand</div>
+    <h3 class="rates-h">Villa Nalu</h3>
+    <div class="rates-place">Ko Samui, Thailand</div>
+    <div class="rates-row"><span class="rates-season">Low Season (May – Oct)</span><span class="rates-price">$3,200 / week</span></div>
+    <div class="rates-row"><span class="rates-season">Mid Season (Nov, Apr)</span><span class="rates-price">$4,200 / week</span></div>
+    <div class="rates-row"><span class="rates-season">High Season (Dec – Mar)</span><span class="rates-price">$5,800 / week</span></div>
+    <div class="rates-note">Includes staff, chef service &amp; airport transfers. Minimum 5-night stay.</div>
+    <a class="rates-cta" href="#contact">Check availability →</a>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section class="tips-wrap">
+  <div class="sec-eye rev">Local Knowledge</div>
+  <h2 class="sec-h rev d1">Tips from<br><em>the owners</em></h2>
+  <div class="tips-grid" style="margin-top:48px;">
+    <div class="tip-card rev">
+      <div class="tip-loc">France — Food</div>
+      <div class="tip-title">Drive to Brantôme on a Tuesday</div>
+      <p class="tip-desc">The Tuesday market is quieter than Périgueux and the charcuterie stall near the abbey has the best duck rillettes in the region. Arrive by 9am.</p>
+      <span class="tip-arrow">→</span>
+    </div>
+    <div class="tip-card rev d1">
+      <div class="tip-loc">France — Activities</div>
+      <div class="tip-title">The Lascaux IV cave complex</div>
+      <p class="tip-desc">The replica caves are genuinely extraordinary — not a consolation prize. Book morning slots on weekdays to avoid coach parties. Children are often more moved than adults.</p>
+      <span class="tip-arrow">→</span>
+    </div>
+    <div class="tip-card rev d2">
+      <div class="tip-loc">Thailand — Beach</div>
+      <div class="tip-title">Silver Beach before 8am</div>
+      <p class="tip-desc">Silver Beach is only accessible by foot or longtail boat. Before 8am it's completely empty. The water is clear and shallow — perfect for children and nervous swimmers.</p>
+      <span class="tip-arrow">→</span>
+    </div>
+    <div class="tip-card rev">
+      <div class="tip-loc">Thailand — Food</div>
+      <div class="tip-title">Lamai night market, not Chaweng</div>
+      <p class="tip-desc">Lamai's night market is smaller, less touristy and the food is better. Try the pad see ew stall run by a mother and daughter — third from the left at the entrance.</p>
+      <span class="tip-arrow">→</span>
+    </div>
+    <div class="tip-card rev d1">
+      <div class="tip-loc">France — Day Trip</div>
+      <div class="tip-title">The medieval village of Domme</div>
+      <p class="tip-desc">Perched above the Dordogne river, Domme has one of the finest viewpoints in Southwest France. Go late afternoon when the light falls across the valley.</p>
+      <span class="tip-arrow">→</span>
+    </div>
+    <div class="tip-card rev d2">
+      <div class="tip-loc">Thailand — Culture</div>
+      <div class="tip-title">Wat Plai Laem at sunrise</div>
+      <p class="tip-desc">The temple complex on the north shore is best visited at first light, before the tour boats arrive. Bring an offering and take your shoes off — even on the outside steps.</p>
+      <span class="tip-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-pg">
+  <div class="quote-pg-bg">
+    <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=80" alt="Landscape">
+  </div>
+  <div class="quote-pg-overlay"></div>
+  <div class="q-line"></div>
+  <p class="q-text">"Some places don't feel like a destination, but like home."</p>
+  <span class="q-attr">Summer Homes Collection — France &amp; Thailand</span>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-wrap" id="contact">
+  <div class="contact-l rev">
+    <div>
+      <div class="c-eye">Plan Your Stay</div>
+      <h2 class="c-h">Ask us<br><em>anything</em></h2>
+      <p class="c-sub">Tell us about your family, your dates and what you're looking for. We'll come back to you personally with everything you need to know.</p>
+    </div>
+    <div class="c-info">
+      <div class="c-info-row"><span class="c-info-label">Email</span><span class="c-info-val"><a href="mailto:hello@summerhomescollection.com">hello@summerhomescollection.com</a></span></div>
+      <div class="c-info-row"><span class="c-info-label">Properties</span><span class="c-info-val">Moulin des Coutoux, France · Villa Nalu, Thailand</span></div>
+    </div>
+  </div>
+  <div class="contact-r rev d1">
+    <div class="form-tag">Enquiry Form</div>
+    <div class="fld-row">
+      <div class="fld"><label>First name</label><input type="text" placeholder="Anna"></div>
+      <div class="fld"><label>Last name</label><input type="text" placeholder="van der Berg"></div>
+    </div>
+    <div class="fld"><label>Email address</label><input type="email" placeholder="hello@email.com"></div>
+    <div class="fld"><label>Which property?</label><select><option value="" disabled selected>Select a property</option><option>Moulin des Coutoux — Dordogne, France</option><option>Villa Nalu — Ko Samui, Thailand</option><option>Both / Not sure yet</option></select></div>
+    <div class="fld"><label>Your message</label><textarea placeholder="Tell us about your family, your dates and what you're looking for…"></textarea></div>
+    <button class="form-submit" id="fsub">Send Enquiry →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="fc"><span class="ft-logo">Summer Homes Collection</span><p class="ft-tag">Two family homes in France and Thailand. Designed for slow days, open space and the feeling of truly arriving somewhere.</p></div>
+    <div class="fc"><span class="fc-title">Properties</span><ul class="fc-links"><li><a href="#">Moulin des Coutoux</a></li><li><a href="#">Villa Nalu</a></li><li><a href="#">Rates &amp; Availability</a></li><li><a href="#">Gallery</a></li></ul></div>
+    <div class="fc"><span class="fc-title">Explore</span><ul class="fc-links"><li><a href="#">Our Story</a></li><li><a href="#">Tips — France</a></li><li><a href="#">Tips — Thailand</a></li><li><a href="#">About Us</a></li></ul></div>
+    <div class="fc"><span class="fc-title">Contact</span><ul class="fc-links"><li><a href="mailto:hello@summerhomescollection.com">hello@summerhomescollection.com</a></li><li><a href="#">Enquire Now</a></li><li><a href="#">Instagram</a></li></ul></div>
+  </div>
+  <div class="fb"><span class="fb-copy">©2026 Summer Homes Collection. All rights reserved.</span><span class="fb-tag">Vol. I — Two homes. One feeling.</span></div>
+</footer>
+
+<script>
+// Cursor
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+document.querySelectorAll('a,button,.what-cell,.tip-card,.prop-img-wrap').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='52px';ring.style.height='52px';ring.style.opacity='.38'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='.55'});
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+
+// Masthead shadow on scroll
+window.addEventListener('scroll',()=>{
+  document.querySelector('.mast').style.boxShadow = window.scrollY > 10 ? '0 2px 24px rgba(0,0,0,.07)' : 'none';
+});
+
+// Form submit
+document.getElementById('fsub').addEventListener('click',function(){
+  this.textContent = 'Sent ✓';
+  this.style.background = '#2B4A2A';
+  setTimeout(()=>{this.textContent='Send Enquiry →';this.style.background='';},3000);
+});
+</script>
+</body>
+</html>
